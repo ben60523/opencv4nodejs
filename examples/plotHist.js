@@ -22,9 +22,9 @@ const red = new cv.Vec(0, 0, 255);
 
 // plot channel histograms
 const plot = new cv.Mat(300, 600, cv.CV_8UC3, [255, 255, 255]);
-cv.plot1DHist(bHist, plot, blue, { thickness: 2 });
-cv.plot1DHist(gHist, plot, green, { thickness: 2 });
-cv.plot1DHist(rHist, plot, red, { thickness: 2 });
+cv.plot1DHist(bHist, plot, blue, 2);
+cv.plot1DHist(gHist, plot, green, 2);
+cv.plot1DHist(rHist, plot, red, 2);
 
 cv.imshow('rgb image', img);
 cv.imshow('rgb histogram', plot);
