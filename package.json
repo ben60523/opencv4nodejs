@@ -32,7 +32,7 @@
     "install": "node ./install/install.js",
     "configure": "node-gyp configure",
     "build": "node-gyp configure build --jobs max",
-    "rebuild": "node-gyp rebuild --jobs max",
+    "rebuild": "node ./install/install.js",
     "clean": "node-gyp clean",
     "build-debug": "BINDINGS_DEBUG=true node ./install/install.js"
   },
