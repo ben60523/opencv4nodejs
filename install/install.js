@@ -1,3 +1,5 @@
+const argv = process.argv[2]
+
 const opencvBuild = require('opencv-build')
 const child_process = require('child_process')
 const fs = require('fs')
@@ -77,12 +79,24 @@ process.env['OPENCV4NODEJS_DEFINES'] = defines.join('\n')
 process.env['OPENCV4NODEJS_INCLUDES'] = includes.join('\n')
 process.env['OPENCV4NODEJS_LIBRARIES'] = libs.join('\n')
 
-const flags = process.env.BINDINGS_DEBUG ? '--jobs max --debug' : '--jobs max'
-const nodegypCmd = 'node-gyp rebuild ' + flags
-log.info('install', `spawning node gyp process: ${nodegypCmd}`)
-const child = child_process.exec(nodegypCmd, { maxBuffer: Infinity }, function(err, stdout, stderr) {
-  const _err = err || stderr
-  if (_err) log.error(_err)
-})
-child.stdout.pipe(process.stdout)
-child.stderr.pipe(process.stderr)
+if (argv === 'e') {
+  const electronCMD = 'electron-rebuild ../'
+  log.info('install', `spawning node gyp process: ${electronCMD}`)
+  const child = child_process.exec(electronCMD, { maxBuffer: Infinity }, function(err, stdout, stderr) {
+    const _err = err || stderr
+    if (_err) log.error(_err)
+  })
+  child.stdout.pipe(process.stdout)
+  child.stderr.pipe(process.stderr)
+} else {
+  const flags = process.env.BINDINGS_DEBUG ? '--jobs max --debug' : '--jobs max'
+  const nodegypCmd = 'node-gyp rebuild ' + flags
+  log.info('install', `spawning node gyp process: ${nodegypCmd}`)
+  const child = child_process.exec(nodegypCmd, { maxBuffer: Infinity }, function(err, stdout, stderr) {
+    const _err = err || stderr
+    if (_err) log.error(_err)
+  })
+  child.stdout.pipe(process.stdout)
+  child.stderr.pipe(process.stderr)
+}
+
