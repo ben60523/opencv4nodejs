@@ -32,7 +32,7 @@
     "install": "node ./install/install.js",
     "configure": "node-gyp configure",
     "build": "node-gyp configure build --jobs max",
-    "rebuild": "node ./install/install.js",
+    "rebuild": "node ./install/install.js e",
     "clean": "node-gyp clean",
     "build-debug": "BINDINGS_DEBUG=true node ./install/install.js"
   },
@@ -42,6 +42,9 @@
     "native-node-utils": "^0.2.7",
     "npmlog": "^4.1.2",
     "opencv-build": "https://github.com/ben60523/npm-opencv-build.git"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^3.2.0"
   },
   "optionalDependencies": {
     "@types/node": ">6"
