@@ -3,6 +3,7 @@ const argv = process.argv[2]
 const opencvBuild = require('opencv-build')
 const child_process = require('child_process')
 const fs = require('fs')
+const path = require('path')
 const log = require('npmlog')
 const { resolvePath } = require('../lib/commons')
 
@@ -29,6 +30,10 @@ function getDefaultLibDir() {
 
 opencvBuild.applyEnvsFromPackageJson()
 
+const lib3PartyDir = opencvBuild.isAutoBuildDisabled()
+  ? (resolvePath(process.env.OPENCV_3rdParty_LIB_DIR) || getDefaultLibDir())
+  : resolvePath(opencvBuild.opencv3rdPartyLibDir)
+
 const libDir = opencvBuild.isAutoBuildDisabled()
   ? (resolvePath(process.env.OPENCV_LIB_DIR) || getDefaultLibDir())
   : resolvePath(opencvBuild.opencvLibDir)
@@ -38,6 +43,19 @@ log.info('install', 'using lib dir: ' + libDir)
 if (!fs.existsSync(libDir)) {
   throw new Error('library dir does not exist: ' + libDir)
 }
+
+if (!fs.existsSync(lib3PartyDir)) {
+  throw new Error('library dir does not exist: ' + lib3PartyDir)
+}
+
+const lib3PartyList = fs.readdirSync(lib3PartyDir)
+
+if (!lib3PartyList) {
+  throw new Error('Read 3rd party libs failed')
+}
+
+const lib3Party = lib3PartyList.map(lib => resolvePath(fs.realpathSync(path.resolve(lib3PartyDir, lib))))
+
 
 const libsFoundInDir = opencvBuild
   .getLibs(libDir)
@@ -74,10 +92,13 @@ includes.forEach(inc => log.info('includes', inc))
 console.log()
 log.info('install', 'setting the following libs:')
 libs.forEach(lib => log.info('libs', lib))
+log.info('install', 'setting the following 3rd party libs:')
+lib3Party.forEach(lib => log.info('libs', lib))
 
 process.env['OPENCV4NODEJS_DEFINES'] = defines.join('\n')
 process.env['OPENCV4NODEJS_INCLUDES'] = includes.join('\n')
 process.env['OPENCV4NODEJS_LIBRARIES'] = libs.join('\n')
+process.env['OPENCV_3rdParty_LIB_DIR'] = lib3Party.join('\n')
 
 if (argv === 'e') {
   const electronCMD = 'electron-rebuild ../'
