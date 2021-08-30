@@ -41,11 +41,11 @@
   "dependencies": {
     "nan": "^2.14.0",
     "native-node-utils": "^0.2.7",
-    "npmlog": "^4.1.2",
-    "opencv-build": "https://github.com/ben60523/npm-opencv-build.git"
+    "npmlog": "^4.1.2"
   },
   "devDependencies": {
-    "electron-rebuild": "^3.2.0"
+    "electron-rebuild": "^3.2.0",
+    "opencv-build": "https://github.com/ben60523/npm-opencv-build.git"
   },
   "optionalDependencies": {
     "@types/node": ">6"
