@@ -135,4 +135,4 @@ void init(v8::Local<v8::Object> target) {
 #endif
 };
 
-NODE_MODULE(opencv4nodejs, init)
+NAN_MODULE_WORKER_ENABLED(opencv4nodejs, init)
